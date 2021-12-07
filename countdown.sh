@@ -1,14 +1,79 @@
 #!/bin/bash
-
 # Use argument for count down. Example: ./countdown.sh 10
 # Author: Yevgeniy Goncharov aka xck, http://sys-admin.kz
 
-COUNT=$1
+# Help information
+usage() {
 
-# bash while loop
-while [ $COUNT -gt 0 ]; do
-        echo $COUNT
-        let COUNT=COUNT-1
-        sleep 1
+    echo -e "" "\nParameters:\n"
+    echo -e "-c - Count (in seconds)"
+    echo -e "-f - Format (1 - Every line, 2 - One Line)\n"
+    exit 1
+}
+
+countdown_by_line() {
+
+        if [ -z "${VAR}" ]; then
+                echo "Please set countdown. Exit."
+                exit 1
+        else
+              secs=$1
+        fi
+
+        # bash while loop
+        while [ $secs -gt 0 ]; do
+                echo $secs
+                let secs=secs-1
+                sleep 1
+        done
+        echo Finish!
+}
+
+countdown_one_line() {
+
+        # secs=$((5 * 60))
+        if [ -z "${VAR}" ]; then
+                echo "Please set countdown. Exit."
+                exit 1
+        else
+              secs=$1
+        fi
+
+        # bash while loop
+        while [ $secs -gt 0 ]; do
+           echo -ne "$secs\033[0K\r"
+           sleep 1
+           : $((secs--))
+        done
+        echo Finish!
+}
+
+if [[ -z "$1" ]]; then
+        usage
+        exit 1
+fi
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+                -c|--count) COUNT=$2; ;;
+                -f|--format) FORMAT="$2"; shift ;;
+                -h|--help) usage ;;
+    esac
+    shift
 done
-echo Finish!
+
+if [[ "$FORMAT" -eq "1" ]]; then
+        countdown_by_line $COUNT
+elif [[ "$FORMAT" -eq "2" ]]; then
+        countdown_one_line $COUNT
+else
+        echo "Unknown format. Exit. Bye!"
+fi
+
+
+
+
+
+
+
+
