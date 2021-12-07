@@ -13,7 +13,7 @@ usage() {
 
 countdown_by_line() {
 
-        if [ -z "${VAR}" ]; then
+        if [[ ! $1 ]]; then
                 echo "Please set countdown. Exit."
                 exit 1
         else
@@ -32,7 +32,7 @@ countdown_by_line() {
 countdown_one_line() {
 
         # secs=$((5 * 60))
-        if [ -z "${VAR}" ]; then
+        if [[ ! $1 ]]; then
                 echo "Please set countdown. Exit."
                 exit 1
         else
