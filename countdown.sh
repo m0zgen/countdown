@@ -21,9 +21,9 @@ countdown_by_line() {
         fi
 
         # bash while loop
-        while [ $secs -gt 0 ]; do
-                echo $secs
-                let secs=secs-1
+        while [ "$secs" -gt 0 ]; do
+                echo "$secs"
+                (( secs=secs-1 )) || true
                 sleep 1
         done
         echo Finish!
@@ -40,7 +40,7 @@ countdown_one_line() {
         fi
 
         # bash while loop
-        while [ $secs -gt 0 ]; do
+        while [ "$secs" -gt 0 ]; do
            echo -ne "$secs\033[0K\r"
            sleep 1
            : $((secs--))
@@ -63,17 +63,9 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [[ "$FORMAT" -eq "1" ]]; then
-        countdown_by_line $COUNT
+        countdown_by_line "$COUNT"
 elif [[ "$FORMAT" -eq "2" ]]; then
-        countdown_one_line $COUNT
+        countdown_one_line "$COUNT"
 else
         echo "Unknown format. Exit. Bye!"
 fi
-
-
-
-
-
-
-
-
